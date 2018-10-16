@@ -1,16 +1,9 @@
 import React from 'react';
-import {Card, Tab} from 'semantic-ui-react';
+import {Card} from 'semantic-ui-react';
 
 const Recipe = ({title, ingredients, instructions, category}) =>  {
-  console.log('ingred', ingredients);
 
-  const panes = [
-    { menuItem: 'Photo', render: () => <Tab.Pane key={1}>Picture</Tab.Pane> },
-    { menuItem: 'Ingredients', render: () => <Tab.Pane key={2}>{ingredients}</Tab.Pane> },
-    { menuItem: 'Instructions', render: () => <Tab.Pane key={3}>{instructions}</Tab.Pane> },
-  ];
-
-  return <Card header={title}>
+  return <Card fluid>
     <Card.Content>
       <Card.Header>{title}</Card.Header>
       <Card.Meta>{category}</Card.Meta>
