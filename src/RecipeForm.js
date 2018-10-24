@@ -1,39 +1,50 @@
 import React from 'react';
 import {Form, Button, Modal} from 'semantic-ui-react';
-import {Query} from 'react-apollo';
+import {Mutation} from 'react-apollo';
 import gql from 'graphql-tag';
 
-const RecipeForm = ({form, categories, saveRecipe, open, closeForm, updateForm}) => <Query fetchPolicy="no-cache" query={gql`
-{
-Categories {
-    name
-    id
-}
-}
-`}>{({loading, error, data}) => {
+const ADD_RECIPE_MUTATION = gql`
+    mutation AddRecipe($title: String!, $ingredients: String!, $instructions: String!, $categoryId: String!) {
+        AddRecipe(data: {title: $title, ingredients: $ingredients, instructions: $instructions, categoryId: $categoryId}) {
+            title,
+            ingredients,
+            instructions
+        }
+    }
+`;
 
-  let categories = [];
-  if (data.Categories && !loading) {
-    data.Categories.map(cat => categories.push({text: cat.name, value: cat.id, key: cat.id}));
-  }
-  
-  return <Modal open={open}>
-    <Modal.Header>Recipe</Modal.Header>
-    <Modal.Content>
-      <Form style={{height: '100%'}}>
-        <Form.Input name="title" value={form.title} label="Title" onChange={(e, data) => console.log('data', data)}/>
-        <Form.Input name="ingredients" value={form.ingredients} label="Ingredients" onChange={(e, data) => console.log('data', data)}/>
-        <Form.Input name="instructions" value={form.instructions} label="Instructions" onChange={(e, data) => console.log('data', data)}/>
-        <Form.Select name="category" value={form.category} options={categories} label="Category" onChange={(e, data) => console.log('data', data)}/>
-      </Form>
-    </Modal.Content>
-    <Modal.Actions>
-      <Button onClick={closeForm}>Cancel</Button>
-      <Button onClick={saveRecipe}>Submit</Button>
-    </Modal.Actions>
-  </Modal>
-}}
+const RecipeForm = ({form, open, closeForm, updateForm, categories}) => {
 
-</Query>;
+  const options = [];
+
+  categories.map(cat => options.push({text: cat.name, value: cat.id, key: cat.id}));
+
+  return <Mutation mutation={ADD_RECIPE_MUTATION}>
+    {
+      (addRecipe, {data}) => (
+        <Modal open={open}>
+          <Modal.Header>Recipe</Modal.Header>
+          <Modal.Content>
+            <Form style={{height: '100%'}}>
+              <Form.Input name="title" value={form.title} label="Title" onChange={(e, data) => updateForm(data)}/>
+              <Form.Input name="ingredients" value={form.ingredients} label="Ingredients"
+                          onChange={(e, data) => updateForm(data)}/>
+              <Form.Input name="instructions" value={form.instructions} label="Instructions"
+                          onChange={(e, data) => updateForm(data)}/>
+              <Form.Select name="categoryId" value={form.categoryId} options={options} label="Category"
+                           onChange={(e, data) => updateForm(data)}/>
+            </Form>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={closeForm}>Cancel</Button>
+            <Button onClick={() => addRecipe({
+              variables: {...form}
+            })}>Submit</Button>
+          </Modal.Actions>
+        </Modal>
+      )
+    }
+  </Mutation>
+};
 
 export default RecipeForm;
