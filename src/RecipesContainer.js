@@ -1,23 +1,10 @@
 import React, {Component} from 'react'
 import {Query} from 'react-apollo';
-import gql from 'graphql-tag';
 import {Loader, Dimmer, Button, Icon, Header, Sidebar} from 'semantic-ui-react';
 import Categories from "./Categories";
-import RecipeForm from "./RecipeForm";
+import AddRecipe from './AddRecipe';
+import {CATEGORIES_QUERY} from "./queries";
 
-const CATEGORIES_QUERY = gql`
-    {
-        Categories {
-            name
-            id
-            recipes {
-                title
-                ingredients
-                instructions
-            }
-        }
-    }
-`;
 
 class RecipesContainer extends Component {
 
@@ -58,7 +45,11 @@ class RecipesContainer extends Component {
             <div style={{display: 'flex', justifyContent: 'center', padding: 50}}>
               <Categories categories={data.Categories}/>
             </div>
-            {this.props.formShown && <RecipeForm categories={data.Categories} closeForm={this.props.hideForm} open={this.props.formShown} form={this.state.recipe} updateForm={this.updateForm.bind(this)}/>}
+            {this.props.formShown && <AddRecipe
+              categories={data.Categories}
+              closeForm={this.props.hideForm}
+              form={this.state.recipe}
+              updateForm={this.updateForm.bind(this)}/>}
           </Sidebar.Pusher>
 
 
