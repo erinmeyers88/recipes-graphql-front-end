@@ -4,9 +4,9 @@ import gql from 'graphql-tag';
 import RecipeForm from './RecipeForm';
 import {CATEGORIES_QUERY} from "./queries";
 
-const ADD_RECIPE_MUTATION = gql`
-    mutation AddRecipe($title: String!, $ingredients: String!, $instructions: String!, $categoryId: String!) {
-        AddRecipe(data: {title: $title, ingredients: $ingredients, instructions: $instructions, categoryId: $categoryId}) {
+const EDIT_RECIPE_MUTATION = gql`
+    mutation EditRecipe($id: String!, $title: String!, $ingredients: String!, $instructions: String!, $categoryId: String!) {
+        UpdateRecipe(id: $id, data: {title: $title, ingredients: $ingredients, instructions: $instructions, categoryId: $categoryId}) {
             title,
             ingredients,
             instructions
@@ -14,14 +14,14 @@ const ADD_RECIPE_MUTATION = gql`
     }
 `;
 
-const AddRecipe = ({form, close, updateForm, categories, clearRecipe}) => {
+const EditRecipe = ({form, close, updateForm, categories, clearRecipe}) => {
 
   const options = [];
 
   categories.map(cat => options.push({text: cat.name, value: cat.id, key: cat.id}));
 
   return <Mutation
-    mutation={ADD_RECIPE_MUTATION}
+    mutation={EDIT_RECIPE_MUTATION}
     onCompleted={() => {
       close();
       clearRecipe();
@@ -29,10 +29,10 @@ const AddRecipe = ({form, close, updateForm, categories, clearRecipe}) => {
     refetchQueries={[{query: CATEGORIES_QUERY}]}
   >
     {
-      (addRecipe, {data}) => (
+      (editRecipe, {data}) => (
         <RecipeForm
-          title={'Add'}
-          saveRecipe={addRecipe}
+          title={'Edit'}
+          saveRecipe={editRecipe}
           updateForm={updateForm}
           categories={categories}
           form={form}
@@ -45,4 +45,4 @@ const AddRecipe = ({form, close, updateForm, categories, clearRecipe}) => {
   </Mutation>
 };
 
-export default AddRecipe;
+export default EditRecipe;

@@ -11,7 +11,12 @@ class Categories extends Component {
     this.props.categories.map(category => panes.push({
       menuItem: category.name,
       render: () => <Tab.Pane style={{height: 400, overflowY: 'auto'}}>
-        <Recipes recipes={category.recipes}/>
+        <Recipes
+          openDeleteRecipeModal={this.props.openDeleteRecipeModal}
+          selectRecipe={this.props.selectRecipe}
+          recipes={category.recipes}
+          openEditRecipeModal={this.props.openEditRecipeModal}
+        />
       </Tab.Pane>
     }));
 

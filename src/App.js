@@ -1,31 +1,49 @@
 import React, {Component} from 'react';
 import {Icon, Sidebar, Menu} from "semantic-ui-react";
-import RecipesContainer from './RecipesContainer';
+import MainContainer from './MainContainer';
 
 class App extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      formShown: false,
-      sidebarShown: false
+      addRecipeModalShown: false,
+      sidebarShown: false,
+      deleteRecipeModalShown: false,
+      editRecipeModalShown: false
     };
   }
 
-  showForm() {
-    this.setState({formShown: true});
+  openAddRecipeModal() {
+    this.setState({addRecipeModalShown: true});
   }
 
-  hideForm() {
-    this.setState({formShown: false});
+  closeAddRecipeModal() {
+    this.setState({addRecipeModalShown: false});
   }
 
-  hideSidebar() {
+  openSidebar() {
+    this.setState({sidebarShown: true});
+  }
+
+  closeSidebar() {
     this.setState({sidebarShown: false});
   }
 
-  showSidebar() {
-    this.setState({sidebarShown: true});
+  openDeleteRecipeModal() {
+    this.setState({deleteRecipeModalShown: true});
+  }
+
+  closeDeleteRecipeModal() {
+    this.setState({deleteRecipeModalShown: false});
+  }
+
+  openEditRecipeModal() {
+    this.setState({editRecipeModalShown: true});
+  }
+
+  closeEditRecipeModal() {
+    this.setState({editRecipeModalShown: false});
   }
 
   render() {
@@ -37,20 +55,27 @@ class App extends Component {
           animation='overlay'
           icon='labeled'
           inverted
-          onHide={this.hideSidebar.bind(this)}
+          onHide={this.closeSidebar.bind(this)}
           vertical
           visible={this.state.sidebarShown}
           width='thin'
         >
-          <Menu.Item onClick={this.showForm.bind(this)}>
+          <Menu.Item onClick={this.openAddRecipeModal.bind(this)}>
             <Icon name='plus'/>
             Add Recipe
           </Menu.Item>
         </Sidebar>
-        <RecipesContainer
-          showSidebar={this.showSidebar.bind(this)}
-          hideForm={this.hideForm.bind(this)}
-          formShown={this.state.formShown}
+        <MainContainer
+          openSidebar={this.openSidebar.bind(this)}
+          openAddRecipeModal={this.openAddRecipeModal.bind(this)}
+          closeAddRecipeModal={this.closeAddRecipeModal.bind(this)}
+          addRecipeModalShown={this.state.addRecipeModalShown}
+          openDeleteRecipeModal={this.openDeleteRecipeModal.bind(this)}
+          closeDeleteRecipeModal={this.closeDeleteRecipeModal.bind(this)}
+          deleteRecipeModalShown={this.state.deleteRecipeModalShown}
+          openEditRecipeModal={this.openEditRecipeModal.bind(this)}
+          closeEditRecipeModal={this.closeEditRecipeModal.bind(this)}
+          editRecipeModalShown={this.state.editRecipeModalShown}
         />
       </Sidebar.Pushable>
     );
