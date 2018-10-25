@@ -3,6 +3,7 @@ import {Button, Modal} from "semantic-ui-react";
 import gql from 'graphql-tag';
 import {Mutation} from 'react-apollo';
 import Recipe from './Recipe';
+import {CATEGORIES_QUERY} from "./queries";
 
 const DELETE_RECIPE_MUTATION = gql`
     mutation DeleteRecipe($id: ID!){
@@ -12,13 +13,14 @@ const DELETE_RECIPE_MUTATION = gql`
     }
 `;
 
-const DeleteRecipe = ({recipe, close, clearSelectedRecipe}) => {
+const DeleteRecipe = ({recipe, close, clearRecipe}) => {
   return <Mutation
     mutation={DELETE_RECIPE_MUTATION}
     onCompleted={() => {
       close();
-      clearSelectedRecipe();
+      clearRecipe();
     }}
+    refetchQueries={[{query: CATEGORIES_QUERY}]}
   >
     {
       (deleteRecipe, {data}) => (
@@ -33,7 +35,7 @@ const DeleteRecipe = ({recipe, close, clearSelectedRecipe}) => {
           <Modal.Actions>
             <Button onClick={close}>Cancel</Button>
             <Button onClick={() => deleteRecipe({
-              id: recipe.id
+              variables: {id: recipe.id}
             })}>Delete</Button>
           </Modal.Actions>
         </Modal>

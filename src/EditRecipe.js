@@ -5,7 +5,7 @@ import RecipeForm from './RecipeForm';
 import {CATEGORIES_QUERY} from "./queries";
 
 const EDIT_RECIPE_MUTATION = gql`
-    mutation EditRecipe($id: String!, $title: String!, $ingredients: String!, $instructions: String!, $categoryId: String!) {
+    mutation EditRecipe($id: ID!, $title: String!, $ingredients: String!, $instructions: String!, $categoryId: String!) {
         UpdateRecipe(id: $id, data: {title: $title, ingredients: $ingredients, instructions: $instructions, categoryId: $categoryId}) {
             title,
             ingredients,

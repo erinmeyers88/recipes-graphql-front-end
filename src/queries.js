@@ -9,6 +9,8 @@ export const CATEGORIES_QUERY = gql`
                 title
                 ingredients
                 instructions
+                id
+                categoryId
             }
         }
     }

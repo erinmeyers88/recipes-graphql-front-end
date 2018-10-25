@@ -3,6 +3,8 @@ import {Form, Button, Modal} from 'semantic-ui-react';
 
 const RecipeForm = ({form, closeForm, updateForm, categories, saveRecipe, clearRecipe, title}) => {
 
+  console.log('form', form);
+
   const options = [];
 
   categories.map(cat => options.push({text: cat.name, value: cat.id, key: cat.id}));
@@ -22,7 +24,7 @@ const RecipeForm = ({form, closeForm, updateForm, categories, saveRecipe, clearR
     </Modal.Content>
   <Modal.Actions>
     <Button onClick={() => {closeForm(); clearRecipe();}}>Cancel</Button>
-    <Button onClick={saveRecipe({
+    <Button onClick={() => saveRecipe({
       variables: {...form, id: form.id ? form.id : null}
     })}>Submit</Button>
   </Modal.Actions>
