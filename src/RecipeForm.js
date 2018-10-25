@@ -2,9 +2,7 @@ import React from 'react';
 import {Form, Button, Modal} from 'semantic-ui-react';
 
 const RecipeForm = ({form, closeForm, updateForm, categories, saveRecipe, clearRecipe, title}) => {
-
-  console.log('form', form);
-
+  
   const options = [];
 
   categories.map(cat => options.push({text: cat.name, value: cat.id, key: cat.id}));
